@@ -122,10 +122,10 @@ Run the server:
 bin/rr-grpc serve -v -d
 ```
 
-##Help
+### Help
 [spriral/php-grpc](https://github.com/spiral/php-grpc) - high-performance PHP GRPC server build at top of RoadRunner.
 
-###Related articles and source
+### Related articles and source
 - [Building gRPC server](https://dev.to/khepin/building-a-grpc-server-in-php-3bgc)
 - [RoadRunner gRPC](https://medium.com/@victor_nerd/roadrunner-hybrid-php-golang-intro-9cc562fb4a09)
 - [roadrunner-bundle](https://github.com/Baldinof/roadrunner-bundle) - thank `vsychov` for cool pool request that add gRPC server support
