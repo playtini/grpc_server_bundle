@@ -1,0 +1,45 @@
+services:
+  Playtini\GrpcServerBundle\Grpc\GrpcServiceProvider:
+    public: true
+    autowire: true
+    
+  Spiral\RoadRunner\Worker:
+    arguments:
+      - '@Spiral\Goridge\RelayInterface'
+
+  playtini.roadrunner.grpc_worker:
+    class: Spiral\RoadRunner\Worker
+    arguments:
+      - '@playtini.roadrunner.grpc_relay'
+
+  Spiral\Goridge\RelayInterface:
+    class: Spiral\Goridge\SocketRelay
+    arguments:
+      - '%kernel.project_dir%/var/roadrunner.sock'
+      - null
+      - !php/const Spiral\Goridge\SocketRelay::SOCK_UNIX
+
+  playtini.roadrunner.grpc_relay:
+    class: Spiral\Goridge\SocketRelay
+    arguments:
+      - '%kernel.project_dir%/var/roadrunner.sock'
+      - null
+      - !php/const Spiral\Goridge\SocketRelay::SOCK_UNIX
+
+  Playtini\GrpcServerBundle\Worker\GrpcWorkerInterface:
+    class: Playtini\GrpcServerBundle\Worker\GrpcWorker
+    tags:
+      - { name: monolog.logger, channel: 'grpc_worker' }
+    arguments:
+      - '@Psr\Log\LoggerInterface'
+      - '@playtini.roadrunner.grpc_worker'
+      - '@Playtini\GrpcServerBundle\Grpc\GrpcServiceProvider'
+
+  Spiral\RoadRunner\PSR7Client:
+    arguments:
+      - '@playtini.roadrunner.grpc_worker'
+
+  Playtini\GrpcServerBundle\Command\GrpcWorkerCommand:
+    autoconfigure: true
+    arguments:
+      - '@Playtini\GrpcServerBundle\Worker\GrpcWorkerInterface'
