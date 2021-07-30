@@ -11,8 +11,6 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 class PlaytiniGrpcServerExtension extends Extension
 {
-    const MONOLOG_CHANNEL = 'grpc_server';
-    
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../config'));
